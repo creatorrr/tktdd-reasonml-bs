@@ -6,7 +6,8 @@ open Tennis;
 
 describe("Test Tooling", () =>
   test("Given a Player 1 the other player is Player 2", () =>
-    expect(other_player(PlayerOne) |> string_of_player) |> toEqual("Player 2")
+    expect(other_player(PlayerOne) |> string_of_player)
+    |> toEqual("Player 2")
   )
 );
 
@@ -20,9 +21,11 @@ describe("Test Game transitions", () => {
     () => {
       let advantagedPlayer = PlayerOne;
       let winner = advantagedPlayer;
-      expect(score_when_advantage(advantagedPlayer, winner) |> string_of_score)
+      expect(
+        score_when_advantage(advantagedPlayer, winner) |> string_of_score,
+      )
       |> toEqual("Game Player 1");
-    }
+    },
   );
   test("Given advantage when the other player wins then score is Deuce", () => {
     let advantagedPlayer = PlayerOne;
@@ -33,24 +36,40 @@ describe("Test Game transitions", () => {
   /* Tests bellow need more conception on types to be implemented */
   test(
     "Given player: 40 when player at 40 wins then score is Game for this player",
-    () =>
-    expect(false) |> toEqual(true)
-  );
-  test("Given player: 40 | other : 30 when other wins then score is Deuce", () =>
-    expect(false) |> toEqual(true)
-  );
-  test("Given player: 40 | other : 15 when other wins then score is 40/15", () =>
-    expect(false) |> toEqual(true)
-  );
+    () => {
+    let p = PlayerOne;
+    expect(score_when_forty(p, p) |> string_of_score)
+    |> toEqual("Game Player 1");
+  });
+  test("Given player: 40 | other : 30 when other wins then score is Deuce", () => {
+    let p1 = PlayerOne;
+    let p2 = other_player(p1);
+    expect(score_when_forty(p1, p2) |> string_of_score) |> toEqual("Deuce");
+  });
+  test("Given player: 40 | other : 15 when other wins then score is 40/30", () => {
+    let currentScore = Points({playerOne: 40, playerTwo: 15});
+    let output = "Player 1: 40, Player 2: 30";
+    expect(score(currentScore, PlayerTwo) |> string_of_score)
+    |> toEqual(output);
+  });
   test(
-    "Given player: 15 | other : 15 when player wins then score is 30/15", () =>
-    expect(false) |> toEqual(true)
-  );
-  test("Given player: 0  | other : 15 when other wins then score is 0/30", () =>
-    expect(false) |> toEqual(true)
-  );
+    "Given player: 15 | other : 15 when player wins then score is 30/15", () => {
+    let currentScore = Points({playerOne: 15, playerTwo: 15});
+    let output = "Player 1: 30, Player 2: 15";
+    expect(score(currentScore, PlayerOne) |> string_of_score)
+    |> toEqual(output);
+  });
+  test("Given player: 0 | other : 15 when other wins then score is 0/30", () => {
+    let currentScore = Points({playerOne: 0, playerTwo: 15});
+    let output = "Player 1: 0, Player 2: 30";
+    expect(score(currentScore, PlayerTwo) |> string_of_score)
+    |> toEqual(output);
+  });
   test(
-    "Given player: 30 | other : 15 when player wins then score is 40/15", () =>
-    expect(false) |> toEqual(true)
-  );
+    "Given player: 30 | other : 15 when player wins then score is 40/15", () => {
+    let currentScore = Points({playerOne: 30, playerTwo: 15});
+    let output = "Player 1: 40, Player 2: 15";
+    expect(score(currentScore, PlayerOne) |> string_of_score)
+    |> toEqual(output);
+  });
 });
